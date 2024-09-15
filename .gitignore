@@ -1,0 +1,8 @@
+HELP.md
+config.txt
+*.log
+node_modules/
+.exercism
+.idea
+__pycache__
+.pytest_cache
