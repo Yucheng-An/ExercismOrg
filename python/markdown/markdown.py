@@ -1,12 +1,19 @@
+# Import the re library
 import re
 
 
 def parse(markdown):
+    # Split the content according to \n
     lines = markdown.split('\n')
+    # set up '' empty string named res
     res = ''
+    # found the result in list, initial not found
     in_list = False
+    # found the result in end of list, initial not found
     in_list_append = False
+    # iterated the markdown line by line
     for i in lines:
+        # found head 6 - 1and follow something the head in line
         if re.match('###### (.*)', i) is not None:
             i = '<h6>' + i[7:] + '</h6>'
         elif re.match('##### (.*)', i) is not None:
@@ -19,6 +26,8 @@ def parse(markdown):
             i = '<h2>' + i[3:] + '</h2>'
         elif re.match('# (.*)', i) is not None:
             i = '<h1>' + i[2:] + '</h1>'
+
+        # Matches list items that start with an asterisk (*) followed by a space.
         m = re.match(r'\* (.*)', i)
         if m:
             if not in_list:
@@ -26,15 +35,16 @@ def parse(markdown):
                 is_bold = False
                 is_italic = False
                 curr = m.group(1)
+                # Handling Bold and Italic Text in Lists
                 m1 = re.match('(.*)__(.*)__(.*)', curr)
                 if m1:
                     curr = m1.group(1) + '<strong>' + \
-                        m1.group(2) + '</strong>' + m1.group(3)
+                           m1.group(2) + '</strong>' + m1.group(3)
                     is_bold = True
                 m1 = re.match('(.*)_(.*)_(.*)', curr)
                 if m1:
                     curr = m1.group(1) + '<em>' + m1.group(2) + \
-                        '</em>' + m1.group(3)
+                           '</em>' + m1.group(3)
                     is_italic = True
                 i = '<ul><li>' + curr + '</li>'
             else:
@@ -49,10 +59,10 @@ def parse(markdown):
                     is_italic = True
                 if is_bold:
                     curr = m1.group(1) + '<strong>' + \
-                        m1.group(2) + '</strong>' + m1.group(3)
+                           m1.group(2) + '</strong>' + m1.group(3)
                 if is_italic:
                     curr = m1.group(1) + '<em>' + m1.group(2) + \
-                        '</em>' + m1.group(3)
+                           '</em>' + m1.group(3)
                 i = '<li>' + curr + '</li>'
         else:
             if in_list:
@@ -75,3 +85,6 @@ def parse(markdown):
     if in_list:
         res += '</ul>'
     return res
+
+
+print(parse("This will be a paragraph"))
