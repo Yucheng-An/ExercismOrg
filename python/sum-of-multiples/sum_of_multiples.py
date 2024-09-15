@@ -5,9 +5,6 @@ def sum_of_multiples(limit, multiples):
 
     print(test)
 
-
-asdfasdfasfsadfsafdas
-
     if len(multiples) == 0:
         return 0
     list1 =[]
